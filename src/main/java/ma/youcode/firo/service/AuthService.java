@@ -1,6 +1,7 @@
 package ma.youcode.firo.service;
 
 
+import ma.youcode.firo.dto.LoginRequest;
 import ma.youcode.firo.dto.RegisterRequest;
 import ma.youcode.firo.model.User;
 import ma.youcode.firo.repository.UserRepository;
@@ -15,6 +16,8 @@ public class AuthService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
         user.setUserName(registerRequest.getUsername());
@@ -26,5 +29,9 @@ public class AuthService {
 
     public String encodePassword(String password){
         return passwordEncoder.encode(password);
+    }
+
+    public void login(LoginRequest loginRequest) {
+
     }
 }

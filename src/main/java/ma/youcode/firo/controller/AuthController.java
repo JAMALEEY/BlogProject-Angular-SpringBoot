@@ -1,5 +1,6 @@
 package ma.youcode.firo.controller;
 
+import ma.youcode.firo.dto.LoginRequest;
 import ma.youcode.firo.dto.RegisterRequest;
 import ma.youcode.firo.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,11 @@ public class AuthController {
     public ResponseEntity signup(@RequestBody RegisterRequest registerRequest) {
         authService.signup(registerRequest);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public void login(@RequestBody LoginRequest loginRequest){
+        return authService.login(loginRequest);
     }
 
 
