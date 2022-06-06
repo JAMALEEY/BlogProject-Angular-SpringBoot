@@ -6,7 +6,7 @@ import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
 
 @Entity
-@Table
+@Table(name = "tables")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
