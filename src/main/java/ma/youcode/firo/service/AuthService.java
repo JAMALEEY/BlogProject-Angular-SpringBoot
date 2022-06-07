@@ -13,6 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AuthService {
     @Autowired
@@ -53,5 +55,12 @@ public class AuthService {
         //  store the return type inside the spring security context
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         return jwtProvider.generateToken(authenticate);
+    }
+
+    public Optional <org.springframework.security.core.userdetails.User> getCurrentUser() {
+        org.springframework.security.core.userdetails.User principal =
+                (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return Optional.of(principal);
+
     }
 }
