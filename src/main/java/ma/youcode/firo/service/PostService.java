@@ -1,6 +1,7 @@
 package ma.youcode.firo.service;
 
 import ma.youcode.firo.dto.PostDto;
+import ma.youcode.firo.exception.PostNotFoundException;
 import ma.youcode.firo.model.Post;
 import ma.youcode.firo.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,10 @@ public class PostService {
 
     }
 
-    public Object readSinglePost(Long id) {
+    public PostDto readSinglePost(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(
+                () -> new PostNotFoundException("For id " + id)
+        );
+        return mapFromPostToDto(post);
     }
 }
