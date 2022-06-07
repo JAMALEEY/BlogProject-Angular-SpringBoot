@@ -1,5 +1,6 @@
 package ma.youcode.firo.security;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -28,5 +29,18 @@ public class JwtProvider {
                 // taking the key and sign it with the jwt
                 .signWith(key)
                 .compact();
+    }
+
+    public Boolean validateToken(String jwt){
+        Jwts.parser().setSigningKey(key).parseClaimsJwt(jwt);
+        return true;
+    }
+
+    public String getUsernameFromJWT(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(key)
+                .parseClaimsJwt(token)
+                .getBody();
+        return claims.getSubject();
     }
 }
