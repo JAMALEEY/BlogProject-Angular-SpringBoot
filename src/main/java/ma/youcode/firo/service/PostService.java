@@ -22,15 +22,20 @@ public class PostService {
     private PostRepository postRepository;
 
     public void createPost(PostDto postDto) {
+        Post post = mapFromDtoToPost(postDto);
+        postRepository.save(post);
+    }
+
+    private Post mapFromDtoToPost(PostDto postDto) {
         Post post = new Post();
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
-        User username = authService.getCurrentUser().orElseThrow(
+        User loggedInUser = authService.getCurrentUser().orElseThrow(
                 () -> new IllegalArgumentException("No user logged in")
         );
-        post.setUsername(username.getUsername());
+        post.setUsername(loggedInUser.getUsername());
         post.setCreatedOn(Instant.now());
-        postRepository.save(post);
+        return post;
     }
 
 
