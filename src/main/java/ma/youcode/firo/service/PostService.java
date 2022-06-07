@@ -2,9 +2,11 @@ package ma.youcode.firo.service;
 
 import ma.youcode.firo.dto.PostDto;
 import ma.youcode.firo.model.Post;
-import ma.youcode.firo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
 
 @Service
 public class PostService {
@@ -17,9 +19,9 @@ public class PostService {
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
         User username = authService.getCurrentUser().orElseThrow(
-                () -> new illegalArgumentException("No user logged in")
-        );
-        post.setUsername(username.getUserName());
-        post.setCreatedOn();
+                () -> new IllegalArgumentException("No user logged in"));
+
+        post.setUsername(username.getUsername());
+        post.setCreatedOn(Instant.now());
     }
 }
