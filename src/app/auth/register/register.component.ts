@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AuthService } from 'src/app/auth.service';
 import { RegisterPayload } from '../register-payload';
+import { AuthService } from 'src/app/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -17,21 +17,23 @@ export class RegisterComponent implements OnInit {
     private formBuilder:FormBuilder,
     private authService:AuthService
     ) { 
-    this.formBuilder.group(
-      {
-        username:'',
-        email:'',
-        password:'',
-        confirmPassword:''
+
+        this.formBuilder.group(
+          {
+            username:'',
+            email:'',
+            password:'',
+            confirmPassword:''
+          }
+        );
+
+        this.registerPayload = {
+          username:'',
+          email:'',
+          password:'',
+          confirmPassword:''
+        }
       }
-    );
-    this.registerPayload = {
-      username:'',
-      email:'',
-      password:'',
-      confirmPassword:''
-    }
-  }
 
   ngOnInit() {
   }
