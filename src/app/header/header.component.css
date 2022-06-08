@@ -1,0 +1,16 @@
+.header{
+    padding: 5px 20px;
+    background: royalblue;
+}
+
+.title{
+    color: rgb(255, 200, 0);
+    text-decoration: none;
+}
+
+.login, .register{
+    float: right;
+    text-decoration: none;
+    color: aliceblue;
+    padding-top: 10px;
+}
