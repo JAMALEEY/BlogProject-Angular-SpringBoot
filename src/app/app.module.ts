@@ -9,6 +9,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterSuccessComponent } from './auth/register-success/register-success.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { RouterModule } from '@angular/router';
     ReactiveFormsModule,
     RouterModule.forRoot([
       {path: 'register', component: RegisterComponent}
-    ])
+    ]),
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
