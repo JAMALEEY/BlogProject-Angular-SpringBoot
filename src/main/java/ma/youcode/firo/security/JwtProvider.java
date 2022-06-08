@@ -32,14 +32,17 @@ public class JwtProvider {
     }
 
     public Boolean validateToken(String jwt){
-        Jwts.parser().setSigningKey(key).parseClaimsJwt(jwt);
+        Jwts.parser()
+                .setSigningKey(key)
+//        verify the JWS (JWT with signature)
+                .parseClaimsJws(jwt);
         return true;
     }
 
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(key)
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
     }
