@@ -1,16 +1,16 @@
 package ma.youcode.firo.dto;
 
 public class RegisterRequest {
-    private String username;
+    private String userName;
     private String password;
     private String email;
 
     public String getUsername() {
-        return username;
+        return userName;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.userName = username;
     }
 
     public String getPassword() {
