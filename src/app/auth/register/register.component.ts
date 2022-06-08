@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AuthService } from 'src/app/auth.service';
 import { RegisterPayload } from '../register-payload';
 
 @Component({
@@ -12,7 +13,10 @@ export class RegisterComponent implements OnInit {
   registerPayload: RegisterPayload;
 
 
-  constructor(private formBuilder:FormBuilder) { 
+  constructor(
+    private formBuilder:FormBuilder,
+    private authService:AuthService
+    ) { 
     this.formBuilder.group(
       {
         username:'',
@@ -36,6 +40,14 @@ export class RegisterComponent implements OnInit {
     this.registerPayload.email = this.registerForm.get('email').value;
     this.registerPayload.password = this.registerForm.get('password').value;
     this.registerPayload.confirmPassword = this.registerForm.get('confirmPassword').value;
+    this.authService.register(this.registerPayload).subscribe(
+      data => {
+        console.log("register success")
+      }, error => {
+        console.log("register failed");
+        
+      }
+    )
   }
 
 
