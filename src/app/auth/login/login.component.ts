@@ -6,38 +6,41 @@ import { LoginPayload } from '../login-payload';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loginPayload!: LoginPayload;
 
   constructor(private authService: AuthService) {
-    this.loginForm = new FormGroup(
-      {
-        username: new FormControl(),
-        password: new FormControl()
-      }
-    );
+    this.loginForm = new FormGroup({
+      username: new FormControl(),
+      password: new FormControl(),
+    });
     // instanciate the loginPayload
     this.loginPayload = {
-      username:'',
-      password:''
-
-    }
-   }
-
-  ngOnInit(): void {
+      userName: '',
+      password: '',
+    };
   }
-  onSubmit(){
+
+  ngOnInit(): void {}
+  onSubmit() {
     // BAsically the payload allows us to send the data to backend
-    this.loginPayload.username = this.loginForm.get('username')?.value;
+    this.loginPayload.userName = this.loginForm.get('username')?.value;
     this.loginPayload.password = this.loginForm.get('password')?.value;
 
     //inject auth service into the component
-    this.authService.login(this.loginPayload).subscribe(
+    /*     this.authService.login(this.loginPayload).subscribe(
       data => { data ? "Login successfull !" : "Sorry error while login to your account !!!" }
-    )
-  }
+    ) */
 
+    this.authService.login(this.loginPayload).subscribe(data => {
+      if(data) {
+        console.log('login success');
+      } else {
+        console.log('Login fail ... Retry ');
+      }
+    })
+  }
 }
