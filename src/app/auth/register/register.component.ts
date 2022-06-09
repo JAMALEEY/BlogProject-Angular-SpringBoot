@@ -26,7 +26,7 @@ export class RegisterComponent implements OnInit {
       password: '',
       confirmPassword: ''
     });
-    
+
     this.registerPayload = {
       username: '',
       email: '',
