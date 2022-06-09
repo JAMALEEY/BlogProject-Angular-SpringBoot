@@ -31,6 +31,7 @@ public class JwtProvider {
                 .compact();
     }
 
+
     public Boolean validateToken(String jwt){
         Jwts.parser()
                 .setSigningKey(key)
