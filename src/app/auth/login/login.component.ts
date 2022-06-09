@@ -18,7 +18,13 @@ export class LoginComponent implements OnInit {
         username: new FormControl(),
         password: new FormControl()
       }
-    )
+    );
+    // instanciate the loginPayload
+    this.loginPayload = {
+      username:'',
+      password:''
+
+    }
    }
 
   ngOnInit(): void {
@@ -28,8 +34,10 @@ export class LoginComponent implements OnInit {
     this.loginPayload.username = this.loginForm.get('username')?.value;
     this.loginPayload.password = this.loginForm.get('password')?.value;
 
-    //inject oauth service into the component
-    this.authService.login(this.loginPayload)
+    //inject auth service into the component
+    this.authService.login(this.loginPayload).subscribe(
+      data => { data ? "Login successfull !" : "Sorry error while login to your account !!!" }
+    )
   }
 
 }
