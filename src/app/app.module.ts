@@ -25,6 +25,7 @@ import {NgxWebstorageModule} from 'ngx-webstorage';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    // required to use the localstorage
     NgxWebstorageModule.forRoot(),
     RouterModule.forRoot([
       { path: 'register', component: RegisterComponent },
