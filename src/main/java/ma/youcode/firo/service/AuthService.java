@@ -43,7 +43,7 @@ public class AuthService {
     }
 
     // authentication process logic using auth manager
-    public String login(LoginRequest loginRequest) {
+    public AuthenticationResponse login(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(
                 // passing user credentials wrapped inside the UsernamepasswordAuthenticationToken class
                 new UsernamePasswordAuthenticationToken(
@@ -54,7 +54,8 @@ public class AuthService {
         // we can now be sure if the user is authenticated
         //  store the return type inside the spring security context
         SecurityContextHolder.getContext().setAuthentication(authenticate);
-        return jwtProvider.generateToken(authenticate);
+        String authenticationToken = jwtProvider.generateToken(authenticate);
+        return new AuthenticationResponse(authenticationToken, loginRequest.getUserName());
     }
 
     public Optional <org.springframework.security.core.userdetails.User> getCurrentUser() {

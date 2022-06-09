@@ -4,6 +4,7 @@ import ma.youcode.firo.dto.LoginRequest;
 import ma.youcode.firo.dto.RegisterRequest;
 import ma.youcode.firo.model.User;
 import ma.youcode.firo.service.AuthService;
+import ma.youcode.firo.service.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class AuthController {
         return new ResponseEntity(HttpStatus.OK);
     }
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest){
+    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest){
        return authService.login(loginRequest);
     }
 
