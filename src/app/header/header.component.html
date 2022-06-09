@@ -1,14 +1,19 @@
 <div class="header">
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-3">
                 <h1>
                     <a href="" class="title">
                     Spring Blog
-                </a>
+                    </a>
                 </h1>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4" *ngIf="authService.isAuthenticated()" >
+            <a href="/add-post" class="new-post">
+                Add New Post
+            </a>
+        </div>
+        <div class="col-md-5">
                 <a href="/login" class="login btn btn-default"> Login</a>
                 <a href="/register" class="register btn btn-default"> Register</a>
         </div>

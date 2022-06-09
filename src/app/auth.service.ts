@@ -27,4 +27,10 @@ export class AuthService {
     }));
   }
 
+  isAuthenticated(): Boolean{
+    return this.localStoraqeService.retrieve(
+      'username'
+    ) != null
+  }
+
 }
