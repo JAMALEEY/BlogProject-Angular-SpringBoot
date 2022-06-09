@@ -1,50 +1,71 @@
 package ma.youcode.firo.security;
 
+import ma.youcode.firo.exception.SpringBlogException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.security.Key;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.*;
+import java.security.cert.CertificateException;
+
 
 @Service
 public class JwtProvider {
 
-    // in order to avoid creating a new key every time we generate the key (create the key once)
-    private Key key;
-    // in order to allow the key to be created on server startup (and use the same key when generated the jwt)
+    private KeyStore keyStore;
+
     @PostConstruct
     public void init() {
-        key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+        try {
+            keyStore = KeyStore.getInstance("JKS");
+            InputStream resourceAsStream = getClass().getResourceAsStream("../springblog.jks");
+            keyStore.load(resourceAsStream, "secret".toCharArray());
+        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
+            throw new SpringBlogException("Exception occured while loading keystore");
+        }
+
     }
 
-    public String generateToken(Authentication authentication){
-        // casting to user of userDetail (springSecurity)
+    public String generateToken(Authentication authentication) {
         User principal = (User) authentication.getPrincipal();
-        return Jwts.builder().setSubject(principal.getUsername())
-                // taking the key and sign it with the jwt
-                .signWith(key)
+        return Jwts.builder()
+                .setSubject(principal.getUsername())
+                .signWith(getPrivateKey())
                 .compact();
     }
 
+    private PrivateKey getPrivateKey() {
+        try {
+            return (PrivateKey) keyStore.getKey("springblog", "secret".toCharArray());
+        } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
+            throw new SpringBlogException("Exception occured while retrieving public key from keystore");
+        }
+    }
 
-    public Boolean validateToken(String jwt){
-        Jwts.parser()
-                .setSigningKey(key)
-//        verify the JWS (JWT with signature)
-                .parseClaimsJws(jwt);
+    public boolean validateToken(String jwt) {
+        Jwts.parser().setSigningKey(getPublickey()).parseClaimsJws(jwt);
         return true;
+    }
+
+    private PublicKey getPublickey() {
+        try {
+            return keyStore.getCertificate("springblog").getPublicKey();
+        } catch (KeyStoreException e) {
+            throw new SpringBlogException("Exception occured while retrieving public key from keystore");
+        }
     }
 
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(key)
+                .setSigningKey(getPublickey())
                 .parseClaimsJws(token)
                 .getBody();
+
         return claims.getSubject();
     }
 }
