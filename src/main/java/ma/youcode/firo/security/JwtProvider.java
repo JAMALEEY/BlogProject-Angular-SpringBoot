@@ -8,25 +8,30 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.*;
 import java.security.cert.CertificateException;
 
-
 @Service
 public class JwtProvider {
 
     private KeyStore keyStore;
+    private String secret = "password";
 
     @PostConstruct
     public void init() {
         try {
-            keyStore = KeyStore.getInstance("JKS");
-            InputStream resourceAsStream = getClass().getResourceAsStream("../springblog.jks");
-            keyStore.load(resourceAsStream, "secret".toCharArray());
+            keyStore  = KeyStore.getInstance(KeyStore.getDefaultType());
+            keyStore.load(new FileInputStream("/home/boilerplate/Documents/Projects/firo/src/main/resources/springblog.jks"),
+                    secret.toCharArray());
+            Key key = keyStore.getKey("springblog", secret.toCharArray());
+
         } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
             throw new SpringBlogException("Exception occured while loading keystore");
+        } catch (UnrecoverableKeyException e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -39,9 +44,11 @@ public class JwtProvider {
                 .compact();
     }
 
+
+
     private PrivateKey getPrivateKey() {
         try {
-            return (PrivateKey) keyStore.getKey("springblog", "secret".toCharArray());
+            return (PrivateKey) keyStore.getKey("springblog", secret.toCharArray());
         } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
             throw new SpringBlogException("Exception occured while retrieving public key from keystore");
         }
@@ -69,3 +76,4 @@ public class JwtProvider {
         return claims.getSubject();
     }
 }
+
