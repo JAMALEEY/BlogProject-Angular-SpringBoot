@@ -10,6 +10,10 @@ import { LocalStorageService } from 'ngx-webstorage';
   providedIn: 'root'
 })
 export class AuthService {
+  logout() {
+    this.localStoraqeService.clear('authenticationToken');
+    this.localStoraqeService.clear('username');
+  }
   private url = 'http://localhost:8080/api/auth/';
 
   constructor(private httpClient: HttpClient, private localStoraqeService: LocalStorageService) {
