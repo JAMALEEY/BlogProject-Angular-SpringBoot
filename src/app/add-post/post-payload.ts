@@ -3,5 +3,4 @@ export class PostPayload{
     content?: String;
     title?: String;
     username?: String;
-
 }
