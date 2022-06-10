@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { PostPayload } from './add-post/post-payload';
 
 @Injectable({
@@ -12,5 +13,8 @@ export class AddPostService {
   }
   addPost(postPayload: PostPayload) {
     return this.httpClient.post('http://localhost:8080/api/posts', postPayload);
+  }
+  getAllPosts(): Observable<Array<PostPayload>>{
+    return this.httpClient.get<Array<PostPayload>>('http://localhost:8080/api/posts/all')
   }
 }
