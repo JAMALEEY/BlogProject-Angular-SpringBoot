@@ -16,6 +16,7 @@ import { AddPostComponent } from './add-post/add-post.component';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { HttpClientInterceptor } from './add-post/http-client-interceptor';
 import { AuthGuard } from './auth/auth.guard';
+import { PostComponent } from './post/post.component';
 
 
 
@@ -29,6 +30,7 @@ import { AuthGuard } from './auth/auth.guard';
     RegisterSuccessComponent,
     HomeComponent,
     AddPostComponent,
+    PostComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,12 +39,15 @@ import { AuthGuard } from './auth/auth.guard';
     ReactiveFormsModule,
     NgxWebstorageModule.forRoot(),
     RouterModule.forRoot([
+      // empty path so that it is our home by default !
       {path: '', component: HomeComponent},
       {path: 'register', component: RegisterComponent},
       {path: 'login', component: LoginComponent},
       {path: 'register-success', component: RegisterSuccessComponent},
       {path: 'home', component: HomeComponent},
-      {path: 'add-post', component: AddPostComponent, canActivate: [AuthGuard]}
+      {path: 'add-post', component: AddPostComponent, canActivate: [AuthGuard]},
+      {path: 'post/:id', component: PostComponent}
+
     ]),
     HttpClientModule,
     EditorModule
